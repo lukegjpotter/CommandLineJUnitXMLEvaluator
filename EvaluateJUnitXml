@@ -13,7 +13,9 @@
 #--------------------------------------
 #
 #               Description:
-#                       <Enter Desc>
+#                       A script to examine a XML file from jUnit and output a
+#                       bar with green and red +'s to denote passes and fails
+#                       respectively.
 #
 #--------------------------------------
 
