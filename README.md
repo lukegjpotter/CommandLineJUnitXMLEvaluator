@@ -6,11 +6,15 @@ By Luke GJ Potter (lukegjpotter)
 A bash script that evaluates the content in jUnit's XML output and prints it to the command line. The repository also includes test material.
 
 To run the EvaluateJUnitXml script:
+
     ./EvaluateJUnitXml file.xml
 
 
 To run the tests:
+
     ./test_runner.sh
+
+The test output looks like:
 
     Evaluating no args
     [ ERROR ] [2013-04-18T23:47:35+0100]: Please supply an argument. 
