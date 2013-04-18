@@ -9,13 +9,15 @@
 #               Date: 18/Apr/13
 #
 #--------------------------------------
-#               Version: 1.0
+#               Version: 2.0
 #--------------------------------------
 #
 #               Description:
 #                       A script to examine a XML file from jUnit and output a
 #                       bar with green and red +'s to denote passes and fails
 #                       respectively.
+#                       The script also outputs statistics relating to the
+#                       number of passes and fails.
 #
 #--------------------------------------
 
@@ -27,6 +29,9 @@ BAD_ARGS=1
 xmlfile=0
 testcase_text='<testcase'
 failure_text='<failure'
+total_tests=0
+failing_tests=0
+passing_tests=0
 pass_decimal=0
 pass_percentage=0
 display_bar_width=50
@@ -35,6 +40,7 @@ display_bar_width=50
 txtbld=$(tput bold)           # Bold
 fail=${txtbld}$(tput setaf 1) # Red for fail
 pass=${txtbld}$(tput setaf 2) # Green for pass
+info=${txtbld}$(tput setaf 4) # Blue for info
 txtrst=$(tput sgr0)           # Reset
 
 # ----- Functions -----
@@ -42,6 +48,16 @@ txtrst=$(tput sgr0)           # Reset
 function err {
 	
 	echo -e "[ ERROR ] [$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+}
+
+# Output stats to Comand Line
+function output_stats_to_cli {
+	
+	echo ""
+	echo -e " Total Number of tests: $total_tests."
+	echo -e " Passing Tests: $passing_tests. Failing Tests: $failing_tests."
+	echo -e " Passing percentage: $pass_percentage%"
+	echo ""
 }
 
 # Output result to Command Line
@@ -69,15 +85,16 @@ function output_result_to_cli {
 		done
 	fi
 	
+	echo -e "\n$info Test Results:$txtrst\n"
 	echo -e " | $passing_icons$failing_icons |"
 }
 
 # Determine Result
 function determine_result {
 	
-	local total_tests=$(cat $xmlfile | grep -c "$testcase_text")
-	local failing_tests=$(cat $xmlfile | grep -c "$failure_text")
-	local passing_tests=$(echo "$total_tests - $failing_tests" | bc)
+	total_tests=$(cat $xmlfile | grep -c "$testcase_text")
+	failing_tests=$(cat $xmlfile | grep -c "$failure_text")
+	passing_tests=$(echo "$total_tests - $failing_tests" | bc)
 	
 	pass_decimal=$(echo "scale=2; $passing_tests / $total_tests" | bc)
 	pass_percentage=$(echo "$pass_decimal * 100" | bc)
@@ -103,5 +120,6 @@ function evaluate_args {
 evaluate_args $@
 determine_result
 output_result_to_cli
+output_stats_to_cli
 
 exit $SUCCESS
