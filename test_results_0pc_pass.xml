@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite>
+    <testcase classname="foo" name="ASuccessfulTest">
+    	<failure type="NotEnoughFoo"> details about failure </failure>
+    </testcase>
+    <testcase classname="foo" name="AnotherSuccessfulTest">
+    	<failure type="NotEnoughFoo"> details about failure </failure>
+    </testcase>
+    <testcase classname="foo" name="AFailingTest">
+        <failure type="NotEnoughFoo"> details about failure </failure>
+    </testcase>
+</testsuite>

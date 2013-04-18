@@ -25,39 +25,72 @@ BAD_ARGS=1
 xmlfile=0
 testcase_text='<testcase'
 failure_text='<failure'
+pass_decimal=0
 pass_percentage=0
+display_bar_width=50
+
+# Text colour variables
+txtbld=$(tput bold)           # Bold
+fail=${txtbld}$(tput setaf 1) # Red for fail
+pass=${txtbld}$(tput setaf 2) # Green for pass
+txtrst=$(tput sgr0)           # Reset
 
 # ----- Functions -----
 # Error Function that writes to STDERR
 function err {
-	echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+	
+	echo -e "[ ERROR ] [$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
 }
 
 # Output result to Command Line
 function output_result_to_cli {
-	exit 0
+	
+	local number_of_passing_test_icons=$(echo "$pass_decimal * $display_bar_width" | bc)
+	local passing_icons=""
+	# Convert from float to integer
+	number_of_passing_test_icons=${number_of_passing_test_icons/.*}
+
+	if [ $number_of_passing_test_icons -gt 0 ]; then
+		for i in $(seq 1 $number_of_passing_test_icons);do
+			passing_icons="$passing_icons$pass+$txtrst"
+		done
+	fi
+	
+	local number_of_failing_test_icons=$(echo "$display_bar_width - $number_of_passing_test_icons" | bc)
+	local failing_icons=""
+	# Convert from float to integer
+	number_of_failing_test_icons=${number_of_failing_test_icons/.*}
+	
+	if [ $number_of_failing_test_icons -gt 0 ]; then
+		for i in $(seq 1 $number_of_failing_test_icons);do
+			failing_icons="$failing_icons$fail+$txtrst"
+		done
+	fi
+	
+	echo -e " | $passing_icons$failing_icons |"
 }
 
 # Determine Result
 function determine_result {
 	
-	total_tests=$(cat $xmlfile | grep -c "$testcase_text")
-	failing_tests=$(cat $xmlfile | grep -c "$failure_text")
-	passing_tests=$(echo "$total_tests - $failing_tests" | bc)
+	local total_tests=$(cat $xmlfile | grep -c "$testcase_text")
+	local failing_tests=$(cat $xmlfile | grep -c "$failure_text")
+	local passing_tests=$(echo "$total_tests - $failing_tests" | bc)
 	
-	pass_percentage=$(echo "scale=2;($passing_tests / $total_tests) * 100" | bc)
+	pass_decimal=$(echo "scale=2; $passing_tests / $total_tests" | bc)
+	pass_percentage=$(echo "$pass_decimal * 100" | bc)
 }
 
 # Evalutate Args
 function evaluate_args {
 	
-	if [ $# != 1 ]; then
+	if [[ $# != 1 ]]; then
 		err 'Please supply an argument.' '\nUsage is ./EvaluateJUnitXml file.xml\n'
 		exit $BAD_ARGS
 	fi
 	
-	if [ ! -f $1 ]; then
-		err 'Please supply a valid file\n'
+	if [[ ! -f $1 ]]; then
+		err 'Please supply a valid file' '\nUsage is ./EvaluateJUnitXml file.xml\n'
 		exit $BAD_ARGS
 	fi
 	
