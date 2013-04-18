@@ -1,0 +1,63 @@
+#!/bin/bash
+#--------------------------------------
+#
+#               EvaluateJUnitXml
+#
+#               Author: Luke Potter
+#               GitHub: lukegjpotter
+#
+#               Date: 18/Apr/13
+#
+#--------------------------------------
+#               Version: 1.0
+#--------------------------------------
+#
+#               Description:
+#                       <Enter Desc>
+#
+#--------------------------------------
+
+# ----- Exit Codes -----
+SUCCESS=0
+BAD_ARGS=1
+
+# ----- Functions -----
+# Error Function that writes to STDERR
+function err {
+	echo -e "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+}
+
+# Output result to Command Line
+function output_result_to_cli {
+	
+}
+
+# Determine Result
+function determine_result {
+	
+}
+
+# Evalutate Args
+function evaluate_args {
+	
+	if [ $# != 1 ]; then
+		err 'Please supply an argument.' '\nUsage is ./EvaluateJUnitXml file.xml\n'
+		exit $BAD_ARGS
+	fi
+	
+	if [ ! -f $1 ]; then
+		err 'Please supply a valid file\n'
+		exit $BAD_ARGS
+	fi
+}
+
+# ----- Variables -----
+xmlfile=0
+# ----- Stagelist -----
+evaluate_args $@
+
+determine_result
+
+output_result_to_cli
+
+exit $SUCCESS
