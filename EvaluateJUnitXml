@@ -9,7 +9,7 @@
 #               Date: 18/Apr/13
 #
 #--------------------------------------
-#               Version: 2.0
+#               Version: 3.0
 #--------------------------------------
 #
 #               Description:
@@ -18,6 +18,7 @@
 #                       respectively.
 #                       The script also outputs statistics relating to the
 #                       number of passes and fails.
+#                       The script outputs the names of the failing test cases.
 #
 #--------------------------------------
 
@@ -48,6 +49,42 @@ txtrst=$(tput sgr0)           # Reset
 function err {
 	
 	echo -e "[ ERROR ] [$(date +'%Y-%m-%dT%H:%M:%S%z')]: $@" >&2
+}
+
+# Extract the test name from the line above the failing test
+function extract_test_name {
+	
+	local raw_output=$(echo $@ | awk '{print $3}')
+	local raw_output_length=$(echo $raw_output | awk '{print length}')
+
+	# Start at 7th poition, take away 6 starting chars and 2 trailing chars from lenght.
+	local test_name=$(echo $raw_output | awk '{print substr($1,7,length($1)-8)}')
+	
+	echo -e "   $test_name"
+}
+
+# Output the failing test names
+function output_failing_tests_to_cli {
+	
+	local previous_line=""
+	local first_time_through=1
+
+	while read line; do
+		
+		if grep -q $failure_text <<<$line; then
+			
+			if [[ $first_time_through -eq 1 ]]; then
+
+				echo -e "$info Failing Tests: $txtrst"
+				first_time_through=0
+			fi
+
+			extract_test_name $previous_line
+		fi
+		previous_line=$line
+	done < $xmlfile
+
+	echo ""
 }
 
 # Output stats to Comand Line
@@ -121,5 +158,6 @@ evaluate_args $@
 determine_result
 output_result_to_cli
 output_stats_to_cli
+output_failing_tests_to_cli
 
 exit $SUCCESS
