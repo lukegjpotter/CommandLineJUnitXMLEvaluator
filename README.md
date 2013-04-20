@@ -9,7 +9,7 @@ To run the EvaluateJUnitXml script:
 
     ./EvaluateJUnitXml file.xml
 
-Here's a [full colour example](https://plus.google.com/u/0/112437746553237814756/posts/DzTpbGyFaxF "Full Colour Example") from my Google+ post
+Here's a [full technicolour example](https://plus.google.com/u/0/112437746553237814756/posts/eQGVQome22N "Full Colour Example") from my Google+ post
 
 To run the tests:
 
