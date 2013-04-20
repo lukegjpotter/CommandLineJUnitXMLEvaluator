@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite>
     <testcase classname="foo" name="FailingTest1">
-    	<failure type="NotEnoughFoo"> details about failure </failure>
+    	<failure type="NotEnoughFoo"> PT boat on the way to Havana. </failure>
     </testcase>
     <testcase classname="foo" name="FailingTest2">
-    	<failure type="NotEnoughFoo"> details about failure </failure>
+    	<failure type="NotEnoughFoo"> I used to make a living man. </failure>
     </testcase>
     <testcase classname="foo" name="FailingTest3">
-        <failure type="NotEnoughFoo"> details about failure </failure>
+        <failure type="NotEnoughFoo"> Picking the Banana, but now I'm a guy for the CIA. </failure>
     </testcase>
 </testsuite>

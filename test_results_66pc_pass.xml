@@ -3,6 +3,6 @@
     <testcase classname="foo" name="ASuccessfulTest"/>
     <testcase classname="foo" name="AnotherSuccessfulTest"/>
     <testcase classname="foo" name="AFailingTest">
-        <failure type="NotEnoughFoo"> details about failure </failure>
+        <failure type="NotEnoughFoo"> Hurray for the USA. </failure>
     </testcase>
 </testsuite>
