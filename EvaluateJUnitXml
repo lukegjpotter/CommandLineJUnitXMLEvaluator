@@ -9,7 +9,7 @@
 #               Date: 18/Apr/13
 #
 #--------------------------------------
-#               Version: 3.0
+#               Version: 4.0
 #--------------------------------------
 #
 #               Description:
@@ -19,6 +19,7 @@
 #                       The script also outputs statistics relating to the
 #                       number of passes and fails.
 #                       The script outputs the names of the failing test cases.
+#                       The messages from the failing tests are outputted too.
 #
 #--------------------------------------
 
@@ -60,7 +61,13 @@ function extract_test_name {
 	# Start at 7th poition, take away 6 starting chars and 2 trailing chars from lenght.
 	local test_name=$(echo $raw_output | awk '{print substr($1,7,length($1)-8)}')
 	
-	echo -e "   $test_name"
+	echo -e "   $test_name:"
+}
+
+# Extract the message from the failing test case.
+function extract_failing_test_message {
+
+	echo -e "    $(echo $@ | awk '{$NF=$2=$1=""; print $0}')"
 }
 
 # Output the failing test names
@@ -80,6 +87,7 @@ function output_failing_tests_to_cli {
 			fi
 
 			extract_test_name $previous_line
+			extract_failing_test_message $line
 		fi
 		previous_line=$line
 	done < $xmlfile
