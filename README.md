@@ -18,11 +18,11 @@ To run the tests:
 The test output looks like:
 
     Evaluating no args
-    [ ERROR ] [2013-04-19T22:53:32+0100]: Please supply an argument. 
+    [ ERROR ] [2013-04-20T19:52:00+0100]: Please supply an argument. 
     Usage is ./EvaluateJUnitXml file.xml
     
     Evaluating invalid file
-    [ ERROR ] [2013-04-19T22:53:32+0100]: Please supply a valid file 
+    [ ERROR ] [2013-04-20T19:52:00+0100]: Please supply a valid file 
     Usage is ./EvaluateJUnitXml file.xml
     
     Evaluating for 0% pass
@@ -36,9 +36,12 @@ The test output looks like:
      Passing percentage: 0%
     
      Failing Tests: 
-       FailingTest1
-       FailingTest2
-       FailingTest3
+       FailingTest1:
+          PT boat on the way to Havana. 
+       FailingTest2:
+          I used to make a living man. 
+       FailingTest3:
+          Picking the Banana, but now I'm a guy for the CIA.
     
     Evaluating for 66% pass
     
@@ -51,7 +54,8 @@ The test output looks like:
      Passing percentage: 66.00%
     
      Failing Tests: 
-       AFailingTest
+       AFailingTest:
+          Hurray for the USA. 
     
     Evaluating for 100% pass
     
